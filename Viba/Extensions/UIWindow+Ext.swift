@@ -6,7 +6,8 @@ import UIKit
 extension UIWindow {
     static var window: UIWindow? {
         let scene = UIApplication.shared.connectedScenes.first
-        if let sceneDelegate: SceneDelegate = (scene?.delegate as? SceneDelegate), let window = sceneDelegate.window {
+        if let sceneDelegate: SceneDelegate = (scene?.delegate as? SceneDelegate),
+           let window = sceneDelegate.window {
             return window
         }
         return nil

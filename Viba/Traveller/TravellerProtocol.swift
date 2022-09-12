@@ -11,7 +11,7 @@ protocol TravellerProtocol {
         animated: Bool,
         hidesTopBar: Bool,
         hidesBottomBar: Bool,
-        modelTransistion: UIModalTransitionStyle
+        viewAnimation: UIView.AnimationOptions
     )
 
     func push(
@@ -22,7 +22,7 @@ protocol TravellerProtocol {
         modelTransistion: UIModalTransitionStyle,
         modelPresentation: UIModalPresentationStyle
     )
-    
+
     func pop(
         type: Destinations?,
         root: Bool,
@@ -53,10 +53,10 @@ extension TravellerProtocol {
     func storySwitch(
         story: Stories,
         destination: Destinations,
-        animated: Bool,
-        hidesTopBar: Bool,
-        hidesBottomBar: Bool,
-        viewAnimation: UIView.AnimationOptions
+        animated: Bool = true,
+        hidesTopBar: Bool = false,
+        hidesBottomBar: Bool = false,
+        viewAnimation: UIView.AnimationOptions = .transitionCrossDissolve
     ) {
         let story = UIStoryboard(name: story.rawValue, bundle: nil)
         Traveller.route.switchRootViewController(
@@ -95,8 +95,8 @@ extension TravellerProtocol {
     func pop(
         type: Destinations?,
         root: Bool,
-        animated: Bool,
-        modelTransistion: UIModalTransitionStyle
+        animated: Bool = true,
+        modelTransistion: UIModalTransitionStyle = .crossDissolve
     ) {
         guard let destinationType = type else {
             Traveller.route.pop(
@@ -106,7 +106,7 @@ extension TravellerProtocol {
             ).perform()
             return
         }
-        
+
         Traveller.route.popToViewController(
             destination: .type(val: destinationType.rawValue),
             animated: animated,
@@ -120,10 +120,10 @@ extension TravellerProtocol {
 extension TravellerProtocol {
     func present(
         type: Destinations,
-        animated: Bool,
-        hidesTopBar: Bool,
-        hidesBottomBar: Bool,
-        modelTransistion: UIModalTransitionStyle,
+        animated: Bool = true,
+        hidesTopBar: Bool = false,
+        hidesBottomBar: Bool = false,
+        modelTransistion: UIModalTransitionStyle = .crossDissolve,
         modelPresentation: UIModalPresentationStyle
     ) {
         Traveller.route.present(
@@ -144,7 +144,7 @@ extension TravellerProtocol {
 // MARK: Add Child&Remove Child
 
 extension TravellerProtocol {
-    func addChild(type: Destinations, modelTransistion: UIModalTransitionStyle) {
+    func addChild(type: Destinations, modelTransistion: UIModalTransitionStyle = .crossDissolve) {
         Traveller.route.addChild(childController: .type(val: type.rawValue), modelTransistionStyle: modelTransistion).perform()
     }
 
