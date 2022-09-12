@@ -22,7 +22,13 @@ protocol TravellerProtocol {
         modelTransistion: UIModalTransitionStyle,
         modelPresentation: UIModalPresentationStyle
     )
-    func pop(type: Destinations?, root: Bool)
+    
+    func pop(
+        type: Destinations?,
+        root: Bool,
+        animated: Bool,
+        modelTransistion: UIModalTransitionStyle
+    )
 
     func present(
         type: Destinations,
@@ -34,7 +40,7 @@ protocol TravellerProtocol {
     )
     func dismiss()
 
-    func addChild(type: Destinations)
+    func addChild(type: Destinations, modelTransistion: UIModalTransitionStyle)
     func removeChild()
 
     func performSegue(story: Stories, type: Destinations)
@@ -86,20 +92,25 @@ extension TravellerProtocol {
         ).perform()
     }
 
-    func pop(type: Destinations?, root: Bool) {
+    func pop(
+        type: Destinations?,
+        root: Bool,
+        animated: Bool,
+        modelTransistion: UIModalTransitionStyle
+    ) {
         guard let destinationType = type else {
             Traveller.route.pop(
                 toRootController: root,
-                animated: true,
-                modelTransistionStyle: .crossDissolve
+                animated: animated,
+                modelTransistionStyle: modelTransistion
             ).perform()
             return
         }
-
+        
         Traveller.route.popToViewController(
             destination: .type(val: destinationType.rawValue),
-            animated: true,
-            modelTransistionStyle: .crossDissolve
+            animated: animated,
+            modelTransistionStyle: modelTransistion
         ).perform()
     }
 }
@@ -133,8 +144,8 @@ extension TravellerProtocol {
 // MARK: Add Child&Remove Child
 
 extension TravellerProtocol {
-    func addChild(type: Destinations) {
-        Traveller.route.addChild(childController: .type(val: type.rawValue), modelTransistionStyle: .crossDissolve).perform()
+    func addChild(type: Destinations, modelTransistion: UIModalTransitionStyle) {
+        Traveller.route.addChild(childController: .type(val: type.rawValue), modelTransistionStyle: modelTransistion).perform()
     }
 
     func removeChild() {
